@@ -96,7 +96,7 @@ function TopBar({ className, ...rest }) {
         <Button
           color="secondary"
           component="a"
-          href="http://localhost:3000/login"
+          href="https://lobby-client.herokuapp.com/login"
           variant="contained"
           size="small"
         >
