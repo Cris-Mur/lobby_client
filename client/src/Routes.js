@@ -21,7 +21,7 @@ const routesConfig = [
   {
     exact: true,
     path: '/',
-    component: () => <Redirect to="/login" />
+    component: () => <Redirect to="/home" />
   },
   {
     exact: true,
