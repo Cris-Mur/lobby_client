@@ -10,7 +10,7 @@ import {
   Toolbar,
   Hidden,
   Typography,
-  // Link,
+  Link,
   makeStyles
 } from '@material-ui/core';
 import { APP_VERSION } from 'src/config';
@@ -81,17 +81,17 @@ function TopBar({ className, ...rest }) {
           variant="body2"
         >
           Dashboard
-        </Link>
+        </Link> */}
         <Link
           className={classes.link}
           color="textSecondary"
           component={RouterLink}
-          to="/docs"
+          to="/login"
           underline="none"
           variant="body2"
         >
-          Documentation
-        </Link> */}
+          View The page
+        </Link>
         <Divider className={classes.divider} />
         <Button
           color="secondary"
