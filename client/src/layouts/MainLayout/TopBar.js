@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import {
   AppBar,
   Box,
-  Button,
-  Divider,
+  // Button,
+  // Divider,
   Toolbar,
   Hidden,
   Typography,
@@ -90,9 +90,9 @@ function TopBar({ className, ...rest }) {
           underline="none"
           variant="body2"
         >
-          View The page
+          View the page
         </Link>
-        <Divider className={classes.divider} />
+        {/* <Divider className={classes.divider} />
         <Button
           color="secondary"
           component="a"
@@ -102,7 +102,7 @@ function TopBar({ className, ...rest }) {
         >
           View the page
           <span role="img" aria-label="Winking_Face">😉</span>
-      </Button>
+      </Button> */}
       </Toolbar>
     </AppBar>
   );
