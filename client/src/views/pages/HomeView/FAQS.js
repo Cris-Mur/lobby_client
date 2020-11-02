@@ -34,7 +34,7 @@ function FAQS({ className, ...rest }) {
           variant="h1"
           color="textPrimary"
         >
-          Frequently asked questions
+          About Hollow knights Team
         </Typography>
         <Box my={3}>
           <Divider />
@@ -53,7 +53,7 @@ function FAQS({ className, ...rest }) {
               variant="overline"
               color="secondary"
             >
-              Technical &amp; Licensing
+              What inspired us to make lobbi 
             </Typography>
             <Box mt={6}>
               <dd>
@@ -61,7 +61,7 @@ function FAQS({ className, ...rest }) {
                   variant="h4"
                   color="textPrimary"
                 >
-                  What do we use for styling our components?
+                  Believing in design
                 </Typography>
               </dd>
               <dt>
@@ -69,8 +69,8 @@ function FAQS({ className, ...rest }) {
                   variant="body1"
                   color="textSecondary"
                 >
-                  We use Material-ui&apos;s hooks api as we think it’s
-                  the best way of avoiding clutter.
+                  We are strongly focused on doing great software experiences
+                  instead of just okay software
                 </Typography>
               </dt>
             </Box>
@@ -80,7 +80,7 @@ function FAQS({ className, ...rest }) {
                   variant="h4"
                   color="textPrimary"
                 >
-                  Are you providing support for setting up my project?
+                  Learning to work with the right resources
                 </Typography>
               </dd>
               <dt>
@@ -88,8 +88,10 @@ function FAQS({ className, ...rest }) {
                   variant="body1"
                   color="textSecondary"
                 >
-                  Yes, we offer email support for all our customers &amp;
-                  even skype meetings for our extended license customers.
+                  Hollow knights is inspired by taking part of the big tech
+                  globalization world, we know this is not the time for doing
+                  all the stuff from zero, so Lobbi is the right opportunity to
+                  learn how to merge with the best supported technologies
                 </Typography>
               </dt>
             </Box>
@@ -103,7 +105,7 @@ function FAQS({ className, ...rest }) {
               variant="overline"
               color="secondary"
             >
-              Design
+              React is the way
             </Typography>
             <Box mt={6}>
               <dd>
@@ -111,18 +113,13 @@ function FAQS({ className, ...rest }) {
                   variant="h4"
                   color="textPrimary"
                 >
-                  Are the design files (sketch, figma) included in the Standard Package?
+                  "Hollow knights is inspired by making beautiful products and React
+                  is the perfect companion for this.
+                  After following exhaustive searching for the best tools we found
+                  React and Material Design as the best alternative for development
+                  And further scaling"
                 </Typography>
               </dd>
-              <dt>
-                <Typography
-                  variant="body1"
-                  color="textSecondary"
-                >
-                  No, we offer the design source file only to Standard Plus Sketch
-                  &amp; Figma and Extended Package.
-                </Typography>
-              </dt>
             </Box>
           </Grid>
         </Grid>
