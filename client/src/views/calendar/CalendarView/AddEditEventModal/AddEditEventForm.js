@@ -71,7 +71,7 @@ function AddEditEventForm({
 
                 // On post request server should return an ID
                 if (mode === 'edit') {
-                  axios.patch(`${process.env.REACT_APP_LOCALHOST}/calendar/events/${data.id}`)
+                  axios.patch(`${process.env.REACT_APP_LOCALHOST}/calendars/events/${data.id}`)
                     .then(function (success) {
                       if (success.status === 200 || 201) {
                         console.log(success)
@@ -240,7 +240,7 @@ function AddEditEventForm({
                   data.start = date_S.getTime();
                   data.end = date_E.getTime();
                   console.log(data.limit)
-                  axios.post(`${process.env.REACT_APP_LOCALHOST}/calendar/events`, data, { headers: { accessToken: token } })
+                  axios.post(`${process.env.REACT_APP_LOCALHOST}/calendars/events`, data, { headers: { accessToken: token } })
                     .then(function (success) {
                       if (success.status === 200 || 201) {
                         console.log(success)
@@ -258,7 +258,7 @@ function AddEditEventForm({
                     });
                 } else {
                   console.log(data.start);
-                  axios.patch(`${process.env.REACT_APP_LOCALHOST}/calendar/events`, data, {headers: {accessToken: token}})
+                  axios.patch(`${process.env.REACT_APP_LOCALHOST}/calendars/events`, data, {headers: {accessToken: token}})
                     .then(function (success) {
                       if (success.status === 200 || 201) {
                         console.log(success)
