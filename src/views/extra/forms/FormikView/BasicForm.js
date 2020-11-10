@@ -1,42 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import clsx from 'clsx';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useSnackbar } from 'notistack';
 import {
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
-  CircularProgress,
   Divider,
   FormHelperText,
   Grid,
-  Link,
   TextField,
-  Typography
+  makeStyles
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import wait from 'src/utils/wait';
+import { addProfile } from 'src/actions/accountActions';
 
-function BasicForm() {
-  const [isAlertVisible, setAlertVisible] = useState(true);
+const stateOptions = ['UC Berkeley', 'Stanford', 'Sacramento',
+                      'Denver', 'El Poblado', 'Shih Hsin University',
+                      'San José State University'];
+
+const GMTOptions = ['GMT-12', 'GMT-11', 'GMT-10', 'GMT-9', 'GMT-8', 
+                    'GMT-7', 'GMT-6', 'GMT-5', 'GMT-4', 'GMT-3', 'GMT-2', 
+                    'GMT-1', 'GMT', 'GMT+1', 'GMT+2', 'GMT+3', 'GMT+4', 
+                    'GMT+5', 'GMT+6', 'GMT+7', 'GMT+8', 'GMT+9', 'GMT+10', 
+                    'GMT+11', 'GMT+12'];
+
+const useStyles = makeStyles(() => ({
+  root: {}
+}));
+
+function BasicForm({ user, className, ...rest }) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Formik
+      enableReinitialize
       initialValues={{
-        email: 'johnnydoe@yahoo.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        password: 'thisisasecuredpassword',
-        policy: false
+        email: '',
+        firstName: '',
+        lastName: '',
+        timezone: '',
+        state: '',
+        country: '',
+        bio: 'new user',
       }}
       validationSchema={Yup.object().shape({
-        email: Yup.string().email().required('Required'),
-        firstName: Yup.string().required('Required'),
-        lastName: Yup.string().required('Required'),
-        password: Yup.string().min(7, 'Must be at least 7 characters').max(255).required('Required'),
-        policy: Yup.boolean().oneOf([true], 'This field must be checked')
+        country: Yup.string().max(255).required('Country is required'),
+        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+        firstName: Yup.string().max(255).required('First name is required'),
+        lastName: Yup.string().max(255).required('Last name is required')
       })}
       onSubmit={async (values, {
         resetForm,
@@ -45,14 +62,16 @@ function BasicForm() {
         setSubmitting
       }) => {
         try {
-          // Make API request
-          await wait(1000);
+          await dispatch(addProfile(values));
           resetForm();
           setStatus({ success: true });
-          setSubmitting(false);
+          enqueueSnackbar('Profile updated', {
+            variant: 'success'
+          });
         } catch (error) {
           setStatus({ success: false });
           setErrors({ submit: error.message });
+        } finally {
           setSubmitting(false);
         }
       }}
@@ -66,84 +85,99 @@ function BasicForm() {
         touched,
         values
       }) => (
-        <Card>
-          <CardHeader title="Basic Form" />
-          <Divider />
-          <CardContent>
-            {isAlertVisible && (
-              <Box mb={3}>
-                <Alert
-                  onClose={() => setAlertVisible(false)}
-                  severity="info"
-                >
-                  This is an info alert - check it out!
-                </Alert>
-              </Box>
-            )}
-            {isSubmitting ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                my={5}
+        <form onSubmit={handleSubmit}>
+          <Card
+            className={clsx(classes.root, className)}
+            {...rest}
+          >
+            <CardHeader title="New User" />
+            <Divider />
+            <CardContent>
+              <Grid
+                container
+                spacing={4}
               >
-                <CircularProgress />
-              </Box>
-            ) : (
-              <form onSubmit={handleSubmit}>
                 <Grid
-                  container
-                  spacing={2}
+                  item
+                  md={6}
+                  xs={12}
                 >
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={Boolean(touched.firstName && errors.firstName)}
-                      fullWidth
-                      helperText={touched.firstName && errors.firstName}
-                      label="First Name"
-                      name="firstName"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.firstName}
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={Boolean(touched.lastName && errors.lastName)}
-                      fullWidth
-                      helperText={touched.lastName && errors.lastName}
-                      label="Last Name"
-                      name="lastName"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.lastName}
-                      variant="outlined"
-                    />
-                  </Grid>
+                  <TextField
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    fullWidth
+                    helperText={touched.firstName && errors.firstName}
+                    label="First Name"
+                    name="firstName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="firstName"
+                    value={values.firstName}
+                    variant="outlined"
+                  />
                 </Grid>
-                <Box mt={2}>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    fullWidth
+                    helperText={touched.lastName && errors.lastName}
+                    label="Last Name"
+                    name="lastName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="lastName"
+                    value={values.lastName}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.username && errors.username)}
+                    fullWidth
+                    helperText={touched.lastName && errors.username}
+                    label="username"
+                    name="username"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="username"
+                    value={values.username}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
                   <TextField
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
-                    helperText={touched.email && errors.email}
+                    helperText={touched.email && errors.email ? errors.email : 'user email'}
                     label="Email Address"
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
+                    required
                     type="email"
                     value={values.email}
                     variant="outlined"
                   />
-                </Box>
-                <Box mt={2}>
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
                   <TextField
                     error={Boolean(touched.password && errors.password)}
                     fullWidth
@@ -152,58 +186,126 @@ function BasicForm() {
                     name="password"
                     onBlur={handleBlur}
                     onChange={handleChange}
+                    required
                     type="password"
                     value={values.password}
                     variant="outlined"
                   />
-                </Box>
-                <Box
-                  alignItems="center"
-                  display="flex"
-                  mt={2}
-                  ml={-1}
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
                 >
-                  <Checkbox
-                    checked={values.policy}
-                    name="policy"
-                    onChange={handleChange}
-                  />
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    I have read the
-                    {' '}
-                    <Link
-                      component="a"
-                      href="#"
-                      color="secondary"
-                    >
-                      Terms and Conditions
-                    </Link>
-                  </Typography>
-                </Box>
-                {Boolean(touched.policy && errors.policy) && (
-                <FormHelperText error>
-                  {errors.policy}
-                </FormHelperText>
-                )}
-                <Box mt={2}>
-                  <Button
-                    color="secondary"
-                    disabled={isSubmitting}
+                  <TextField
                     fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
+                    label="Select State"
+                    name="state"
+                    onChange={handleChange}
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.state}
+                    variant="outlined"
                   >
-                    Sign up
-                  </Button>
+                    {stateOptions.map((state) => (
+                      <option
+                        key={state}
+                        value={state}
+                      >
+                        {state}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    fullWidth
+                    label="Select Timezone"
+                    name="timezone"
+                    onChange={handleChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    value={values.timezone}
+                    variant="outlined"
+                  >
+                    {GMTOptions.map((timezone) => (
+                      <option
+                        key={timezone}
+                        value={timezone}
+                      >
+                        {timezone}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.country && errors.country)}
+                    fullWidth
+                    helperText={touched.country && errors.country}
+                    label="Country"
+                    name="country"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    required
+                    type="country"
+                    value={values.country}
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid
+                  item
+                  md={6}
+                  xs={12}
+                >
+                  <TextField
+                    error={Boolean(touched.bio && errors.bio)}
+                    fullWidth
+                    helperText={touched.bio && errors.bio}
+                    label="Bio"
+                    name="bio"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    type="bio"
+                    value={values.bio}
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+              {errors.submit && (
+                <Box mt={3}>
+                  <FormHelperText error>
+                    {errors.submit}
+                  </FormHelperText>
                 </Box>
-              </form>
-            )}
-          </CardContent>
-        </Card>
+              )}
+            </CardContent>
+            <Divider />
+            <Box
+              p={2}
+              display="flex"
+              justifyContent="flex-end"
+            >
+              <Button
+                color="secondary"
+                disabled={isSubmitting}
+                type="submit"
+                variant="contained"
+              >
+                Set User
+              </Button>
+            </Box>
+          </Card>
+        </form>
       )}
     </Formik>
   );

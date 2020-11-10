@@ -8,7 +8,7 @@ export const SILENT_LOGIN = '@account/silent-login';
 export const LOGOUT = '@account/logout';
 export const REGISTER = '@account/register';
 export const UPDATE_PROFILE = '@account/update-profile';
-
+export const CREATE_PROFILE = '@account/create-profile';
 export function login(email, password) {
   return async dispatch => {
     try {
@@ -72,4 +72,21 @@ export function updateProfile(update) {
       })
     );
   };
+}
+export function addProfile(update) {
+  console.log(update);
+  const token = window.localStorage.getItem('accessToken');
+  console.log()
+  axios.post(
+    `${process.env.REACT_APP_LOCALHOST}/accounts`,
+    update,
+    { headers: {
+      accessToken: `Bearer ${token}`
+    }}
+  )
+  .then(response =>
+      {console.log(response)}
+  ).catch(err => {
+    console.log({error: err})
+  })
 }

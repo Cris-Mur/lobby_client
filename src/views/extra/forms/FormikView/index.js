@@ -28,7 +28,7 @@ function FormikView() {
   return (
     <Page
       className={classes.root}
-      title="Formik Form"
+      title="User management"
     >
       <Container maxWidth="lg">
         {/* <Breadcrumbs
@@ -54,7 +54,7 @@ function FormikView() {
           variant="h3"
           color="textPrimary"
         >
-          Formik
+          User Management
         </Typography>
         <Box mt={3}>
           <Grid container>
